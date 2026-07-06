@@ -58,22 +58,26 @@ export default function AuthForm({ mode }: { mode: 'login' | 'signup' }) {
     setIsLoading(true);
     try {
       if (isSignup) {
-        const { error: signUpError } = await supabase.auth.signUp({
+        const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
           email: values.email,
           password: values.password,
           options: { data: { nickname: values.nickname } },
         });
         if (signUpError) throw signUpError;
 
-        /* 가입 직후 자동 로그인 시도 */
+        /* 이메일 인증 자동 처리 (60초 내 가입한 사용자만 적용) */
+        if (signUpData.user) {
+          await supabase.rpc('confirm_new_signup', { p_user_id: signUpData.user.id });
+        }
+
+        /* 가입 직후 자동 로그인 */
         const { error: loginError } = await supabase.auth.signInWithPassword({
           email: values.email,
           password: values.password,
         });
 
         if (loginError) {
-          /* 이메일 인증이 필요한 경우 */
-          toast.success('가입 완료! 이메일을 확인하고 인증 후 로그인해주세요.');
+          toast.success('가입 완료! 이메일 인증 후 로그인해주세요.');
           router.push('/login');
         } else {
           toast.success('가입 완료! 환영합니다.');
