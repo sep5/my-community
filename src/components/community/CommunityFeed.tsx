@@ -4,6 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import { Plus } from 'lucide-react';
 import Link from 'next/link';
 import MasonryGrid from './MasonryGrid';
+import CardGrid from './CardGrid';
 import { supabase } from '@/lib/supabase';
 import type { Post } from '@/types';
 
@@ -54,11 +55,12 @@ async function fetchPosts(sort = 'latest'): Promise<Post[]> {
  *
  * Props:
  * @param {string} sort - 정렬 방식 ('latest' | 'popular') [Optional, 기본값: 'latest']
+ * @param {string} layout - 레이아웃 방식 ('masonry' | 'card') [Optional, 기본값: 'masonry']
  *
  * Example usage:
- * <CommunityFeed sort="latest" />
+ * <CommunityFeed sort="latest" layout="card" />
  */
-export default function CommunityFeed({ sort = 'latest' }: { sort?: string }) {
+export default function CommunityFeed({ sort = 'latest', layout = 'masonry' }: { sort?: string; layout?: 'masonry' | 'card' }) {
   const { data: posts = [], isLoading } = useQuery({
     queryKey: ['posts', sort],
     queryFn: () => fetchPosts(sort),
@@ -76,7 +78,11 @@ export default function CommunityFeed({ sort = 'latest' }: { sort?: string }) {
           글 작성
         </Link>
       </div>
-      <MasonryGrid posts={posts} isLoading={isLoading} />
+      {layout === 'card' ? (
+        <CardGrid posts={posts} isLoading={isLoading} />
+      ) : (
+        <MasonryGrid posts={posts} isLoading={isLoading} />
+      )}
     </div>
   );
 }
