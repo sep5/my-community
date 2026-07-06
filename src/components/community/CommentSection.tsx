@@ -1,6 +1,6 @@
 ﻿'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Loader2, Send, Trash2, Pencil } from 'lucide-react';
@@ -78,11 +78,11 @@ export default function CommentSection({ postId }: { postId: string }) {
   });
 
   const [currentUserId, setCurrentUserId] = useState<string | null>(null);
-  useState(() => {
+  useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
       setCurrentUserId(data.session?.user.id ?? null);
     });
-  });
+  }, []);
 
   return (
     <section aria-label="댓글">

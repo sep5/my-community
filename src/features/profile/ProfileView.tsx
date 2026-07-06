@@ -28,22 +28,25 @@ async function fetchUserPosts(userId: string): Promise<Post[]> {
 }
 
 async function fetchLikedPosts(userId: string): Promise<Post[]> {
-  const { data } = await supabase
+  const { data: likeData } = await supabase
     .from('likes')
-    .select('post:posts(*, author:users(id, nickname, avatar), likes_count:likes(count), comments_count:comments(count))')
-    .eq('user_id', userId)
+    .select('post_id')
+    .eq('user_id', userId);
+
+  const postIds = (likeData ?? []).map((l) => l.post_id);
+  if (postIds.length === 0) return [];
+
+  const { data } = await supabase
+    .from('posts')
+    .select('*, author:users(id, nickname, avatar), likes_count:likes(count), comments_count:comments(count)')
+    .in('id', postIds)
     .order('created_at', { ascending: false });
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  return (data ?? []).flatMap((item: any) => {
-    const p = item.post;
-    if (!p) return [];
-    return [{
-      ...p,
-      likes_count: Array.isArray(p.likes_count) ? p.likes_count[0]?.count ?? 0 : 0,
-      comments_count: Array.isArray(p.comments_count) ? p.comments_count[0]?.count ?? 0 : 0,
-    }] as Post[];
-  });
+  return (data ?? []).map((p) => ({
+    ...p,
+    likes_count: Array.isArray(p.likes_count) ? p.likes_count[0]?.count ?? 0 : 0,
+    comments_count: Array.isArray(p.comments_count) ? p.comments_count[0]?.count ?? 0 : 0,
+  }));
 }
 
 /**
