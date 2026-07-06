@@ -1,0 +1,215 @@
+﻿@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/* ─────────────────────────────────────────────
+   Vintage Editorial Color System
+   이미지 레퍼런스 기반 — 웜 크림 + 딥 레드 + 웜 스톤
+───────────────────────────────────────────── */
+@theme inline {
+  /* Color Tokens */
+  --color-background:        var(--background);
+  --color-foreground:        var(--foreground);
+  --color-card:              var(--card);
+  --color-card-foreground:   var(--card-foreground);
+  --color-popover:           var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary:           var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary:         var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted:             var(--muted);
+  --color-muted-foreground:  var(--muted-foreground);
+  --color-accent:            var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive:       var(--destructive);
+  --color-border:            var(--border);
+  --color-input:             var(--input);
+  --color-ring:              var(--ring);
+
+  /* Brand Colors */
+  --color-brand-crimson:       #C82828;   /* Vivid Red */
+  --color-brand-crimson-light: #E03A3A;
+  --color-brand-crimson-dark:  #8C2018;   /* Deep Red — Footer */
+  --color-brand-pink:          #F5A0B5;   /* Soft Pink */
+  --color-brand-blue:          #88C0D0;   /* Sky Blue */
+  --color-brand-stone:         #C0B8AA;   /* Warm Stone */
+  --color-brand-stone-dark:    #6A5C4A;
+  --color-brand-stone-light:   #E0D8CC;
+  --color-brand-beige:         #C8B898;   /* Warm Beige */
+  --color-brand-cream:         #FFF8F2;   /* Warm Cream BG */
+  --color-brand-card:          #FFF8F2;   /* Card Background */
+  --color-brand-muted:         #7E6E62;   /* Muted Text */
+  --color-brand-border:        #EAD8CC;   /* Warm Border */
+
+  /* Typography */
+  --font-sans:    var(--font-inter);
+  --font-serif:   var(--font-playfair);
+  --font-mono:    var(--font-geist-mono);
+  --font-heading: var(--font-playfair);
+
+  /* Border Radius */
+  --radius-sm:   calc(var(--radius) * 0.5);
+  --radius-md:   calc(var(--radius) * 0.75);
+  --radius-lg:   var(--radius);
+  --radius-xl:   calc(var(--radius) * 1.5);
+  --radius-2xl:  calc(var(--radius) * 2);
+  --radius-full: 9999px;
+
+  /* Sidebar (shadcn) */
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+}
+
+/* ─────────────────────────────────────────────
+   Light Mode — Vintage Editorial
+───────────────────────────────────────────── */
+:root {
+  --background:             #FFF8F2;   /* Warm Light Cream — 전체 페이지 배경 */
+  --foreground:             #28201A;   /* Warm Dark Brown — 기본 텍스트 */
+  --card:                   #FFFFFF;   /* 카드 배경 — 화이트 */
+  --card-foreground:        #28201A;
+  --popover:                #FFFFFF;
+  --popover-foreground:     #28201A;
+  --primary:                #C82828;   /* Vivid Red — CTA, 강조 */
+  --primary-foreground:     #FFFFFF;
+  --secondary:              #F5EDE8;   /* Warm Light Pink — 보조 배경 */
+  --secondary-foreground:   #28201A;
+  --muted:                  #F5EDE8;   /* 뮤트 영역 */
+  --muted-foreground:       #7E6E62;   /* 캡션, 보조 텍스트 */
+  --accent:                 #F5A0B5;   /* Soft Pink — 포인트 */
+  --accent-foreground:      #28201A;
+  --destructive:            #DC2626;
+  --border:                 #EAD8CC;   /* Warm Border */
+  --input:                  #EAD8CC;
+  --ring:                   #C82828;
+  --radius:                 0.5rem;
+
+  --sidebar:                #F7F3ED;
+  --sidebar-foreground:     #28201A;
+  --sidebar-primary:        #C41E2A;
+  --sidebar-primary-foreground: #FFFFFF;
+  --sidebar-accent:         #E4DDD0;
+  --sidebar-accent-foreground: #28201A;
+  --sidebar-border:         #D8D0C8;
+  --sidebar-ring:           #C41E2A;
+}
+
+/* ─────────────────────────────────────────────
+   Dark Mode
+───────────────────────────────────────────── */
+.dark {
+  --background:             #1A1612;   /* 웜 블랙 */
+  --foreground:             #F0EBE3;
+  --card:                   #282218;
+  --card-foreground:        #F0EBE3;
+  --popover:                #282218;
+  --popover-foreground:     #F0EBE3;
+  --primary:                #E8A0A8;   /* 소프트 로즈 */
+  --primary-foreground:     #1A1612;
+  --secondary:              #302820;   /* 다크 베이지 */
+  --secondary-foreground:   #F0EBE3;
+  --muted:                  #282218;
+  --muted-foreground:       #A09080;
+  --accent:                 #6A5C4A;   /* 다크 스톤 */
+  --accent-foreground:      #FFFFFF;
+  --destructive:            #EF4444;
+  --border:                 #302820;
+  --input:                  #382C24;
+  --ring:                   #E8A0A8;
+
+  --sidebar:                #282218;
+  --sidebar-foreground:     #F0EBE3;
+  --sidebar-primary:        #E8A0A8;
+  --sidebar-primary-foreground: #1A1612;
+  --sidebar-accent:         #302820;
+  --sidebar-accent-foreground: #F0EBE3;
+  --sidebar-border:         #382C24;
+  --sidebar-ring:           #E8A0A8;
+}
+
+/* ─────────────────────────────────────────────
+   Base Reset
+───────────────────────────────────────────── */
+@layer base {
+  *, *::before, *::after {
+    box-sizing: border-box;
+    border-color: var(--color-border);
+  }
+
+  html {
+    @apply h-full scroll-smooth;
+    font-feature-settings: "kern" 1, "liga" 1;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply min-h-full bg-background text-foreground antialiased;
+    font-family: var(--font-inter), system-ui, sans-serif;
+    line-height: 1.6;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-playfair), Georgia, serif;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+  }
+
+  /* Focus visible */
+  :focus-visible {
+    @apply outline-2 outline-offset-2;
+    outline-color: var(--color-ring);
+  }
+
+  /* Selection */
+  ::selection {
+    background: #C41E2A22;
+    color: #C41E2A;
+  }
+
+  img, video {
+    @apply max-w-full;
+  }
+}
+
+/* ─────────────────────────────────────────────
+   Utility Classes
+───────────────────────────────────────────── */
+@layer utilities {
+  /* Container — 섹션 너비 표준 */
+  .section-container {
+    @apply mx-auto w-full max-w-7xl px-6 md:px-12 lg:px-16;
+  }
+
+  /* Typography — Editorial Serif */
+  .text-editorial {
+    font-family: var(--font-playfair), Georgia, serif;
+    letter-spacing: -0.02em;
+  }
+
+  /* Hover 이미지 줌 */
+  .img-zoom {
+    @apply overflow-hidden;
+  }
+  .img-zoom img {
+    @apply transition-transform duration-700 ease-out;
+  }
+  .img-zoom:hover img {
+    @apply scale-105;
+  }
+
+  /* 카드 호버 */
+  .card-hover {
+    @apply transition-all duration-300 ease-out;
+  }
+  .card-hover:hover {
+    @apply -translate-y-1 shadow-lg;
+  }
+}
