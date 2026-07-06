@@ -1,10 +1,10 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Star, Heart, ArrowRight } from 'lucide-react';
+import { Star, Heart, ArrowRight, ChevronDown } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import type { Post } from '@/types';
 
@@ -43,6 +43,8 @@ export default function HeroSection() {
   const [featuredPost, setFeaturedPost] = useState<Post | null>(null);
   const [popularPosts, setPopularPosts] = useState<Post[]>([]);
   const [latestPosts, setLatestPosts] = useState<Post[]>([]);
+  const [popularOpen, setPopularOpen] = useState(false);
+  const [latestOpen, setLatestOpen] = useState(false);
 
   useEffect(() => {
     /* 대표 이미지 — 가장 최신 글 1개 */
@@ -123,38 +125,88 @@ export default function HeroSection() {
 
             {/* 오늘의 인기글 패널 */}
             <div className="rounded-xl overflow-hidden" style={{ backgroundColor: '#F5A0B5' }}>
-              <Link
-                href="/community?sort=popular"
-                className="flex items-center justify-between px-5 py-3.5 hover:opacity-90 transition-opacity"
-              >
-                <span className="text-sm font-semibold" style={{ color: '#8C2018' }}>오늘의 인기글</span>
-                <ArrowRight size={15} style={{ color: '#8C2018' }} />
-              </Link>
-              {popularPosts.length > 0 && (
-                <div className="px-1 pb-2" style={{ color: '#8C2018' }}>
-                  {popularPosts.map((post, i) => (
-                    <PostRow key={post.id} post={post} index={i} />
-                  ))}
-                </div>
-              )}
+              <div className="flex items-center justify-between px-5 py-3.5">
+                <Link
+                  href="/community?sort=popular"
+                  className="text-sm font-semibold hover:opacity-70 transition-opacity"
+                  style={{ color: '#8C2018' }}
+                >
+                  오늘의 인기글
+                </Link>
+                <button
+                  onClick={() => setPopularOpen((v) => !v)}
+                  className="p-1 hover:opacity-70 transition-opacity"
+                  aria-label={popularOpen ? '인기글 접기' : '인기글 펼치기'}
+                  aria-expanded={popularOpen}
+                >
+                  <motion.span
+                    animate={{ rotate: popularOpen ? 180 : 0 }}
+                    transition={{ duration: 0.25 }}
+                    className="block"
+                  >
+                    <ChevronDown size={15} style={{ color: '#8C2018' }} />
+                  </motion.span>
+                </button>
+              </div>
+              <AnimatePresence initial={false}>
+                {popularOpen && popularPosts.length > 0 && (
+                  <motion.div
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: 'auto', opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    transition={{ duration: 0.25, ease: 'easeInOut' }}
+                    style={{ overflow: 'hidden', color: '#8C2018' }}
+                    className="px-1 pb-2"
+                  >
+                    {popularPosts.map((post, i) => (
+                      <PostRow key={post.id} post={post} index={i} />
+                    ))}
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
 
             {/* 새로운 이야기 패널 */}
             <div className="rounded-xl overflow-hidden" style={{ backgroundColor: '#88C0D0' }}>
-              <Link
-                href="/community"
-                className="flex items-center justify-between px-5 py-3.5 hover:opacity-90 transition-opacity"
-              >
-                <span className="text-sm font-semibold" style={{ color: '#1A4A5A' }}>새로운 이야기</span>
-                <ArrowRight size={15} style={{ color: '#1A4A5A' }} />
-              </Link>
-              {latestPosts.length > 0 && (
-                <div className="px-1 pb-2" style={{ color: '#1A4A5A' }}>
-                  {latestPosts.map((post, i) => (
-                    <PostRow key={post.id} post={post} index={i} />
-                  ))}
-                </div>
-              )}
+              <div className="flex items-center justify-between px-5 py-3.5">
+                <Link
+                  href="/community"
+                  className="text-sm font-semibold hover:opacity-70 transition-opacity"
+                  style={{ color: '#1A4A5A' }}
+                >
+                  새로운 이야기
+                </Link>
+                <button
+                  onClick={() => setLatestOpen((v) => !v)}
+                  className="p-1 hover:opacity-70 transition-opacity"
+                  aria-label={latestOpen ? '최신글 접기' : '최신글 펼치기'}
+                  aria-expanded={latestOpen}
+                >
+                  <motion.span
+                    animate={{ rotate: latestOpen ? 180 : 0 }}
+                    transition={{ duration: 0.25 }}
+                    className="block"
+                  >
+                    <ChevronDown size={15} style={{ color: '#1A4A5A' }} />
+                  </motion.span>
+                </button>
+              </div>
+              <AnimatePresence initial={false}>
+                {latestOpen && latestPosts.length > 0 && (
+                  <motion.div
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: 'auto', opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    transition={{ duration: 0.25, ease: 'easeInOut' }}
+                    style={{ overflow: 'hidden', color: '#1A4A5A' }}
+                    className="px-1 pb-2"
+                  >
+                    {latestPosts.map((post, i) => (
+                      <PostRow key={post.id} post={post} index={i} />
+                    ))}
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
           </motion.div>
 
